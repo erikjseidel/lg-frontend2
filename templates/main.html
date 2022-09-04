@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- AS36198 LG frontend. HTML and AJAX JS based on Nexril LG Frontend by James Wang -->
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ title }}">
+    <meta name="keywords" content="{{ keywords }}">
+
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Styles -->
+    <link href="static/css/cerulean.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Container -->
+<div class="container">
+
+    <!-- Header -->
+    <header class="header nohighlight" id="overview">
+        <div class="row">
+            <div class="span12">
+                <h1>
+		    <a id="title" href="{{ link }}">
+                         {{ title }}
+                    </a>
+                </h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Network Tests -->
+    <section id="tests">
+        <div class="row">
+            <div class="span12">
+                <form class="well form-inline" id="networktest" action="#results" method="post">
+                    <fieldset>
+                        <span id="legend">Network Tests</span>
+                        <select id="router" name="router" class="input-medium" style="margin-left: 5px;" onchange="dropdownChange()">
+			    {% for key, router_item in routers.items() %}
+			        <option value="{{ key }}">{{ router_item.description }}</option>
+			    {% endfor %}
+                        </select>
+
+                        <select id="cmd" name="cmd" class="input-medium" style="margin-left: 5px;" onchange="dropdownChange()">
+                            <option value="route" selected="selected">show route</option>
+                            <option value="ping">ping</option>
+                            <option value="traceroute">traceroute</option>
+                        </select>
+
+                        <div id="hosterror" class="control-group">
+                            <div class="controls">
+                                <input id="host" name="host" type="text" class="input-large" placeholder="Host or IP address">
+                            </div>
+                        </div>
+
+                        <select id="version" name="version" class="input-medium" onchange="dropdownChange()">
+                            <option value="v6" selected="selected">Prefer IPv6</option>
+                            <option value="v4">Prefer IPv4</option>
+                        </select>
+
+                        <button type="submit" id="submit" name="submit" class="btn btn-primary" style="margin-left: 10px;">Run Test</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" style="display:none">
+        <div class="row">
+            <div class="span12">
+                <div class="well">
+                    <span id="legend">Results</span>
+                    <pre id="response" style="display:none"></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</div><!-- /container -->
+
+<!-- Javascript -->
+<script src="static/js/jquery-1.11.2.min.js"></script>
+<script src="static/js/LookingGlass.js"></script>
+<script src="static/js/XMLHttpRequest.min.js"></script>
+
+<script>
+    function dropdownChange()
+    {
+        var cmd = $('#cmd :selected').attr('value');
+
+        if (cmd == 'bgpsummary') {
+            $('#host').attr('disabled', 'disabled');
+        } else {
+            $('#host').removeAttr('disabled');
+        }
+
+        if (cmd == 'route') {
+            $('#host').attr('placeholder', 'Prefix or IP address');
+        } else {
+            $('#host').attr('placeholder', 'Host or IP address');
+        }
+    }
+</script>
+</body>
+</html>
