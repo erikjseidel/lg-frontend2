@@ -91,6 +91,6 @@ def ajax():
     elif code == 400:
         result_str = result['message']
     else:
-        result_str = 'Unknown error'
+        result_str = 'Error connecting to router. Please try again.'
 
     return result_str
